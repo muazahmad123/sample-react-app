@@ -12,6 +12,9 @@ function App() {
         <p>
           This is a sample react app!
         </p>
+        <p>
+          This is a sample react app!
+        </p>
         <a
           className="App-link"
           href="https://reactjs.org"
