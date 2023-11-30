@@ -1,17 +1,32 @@
 pipeline {
-  agent any
-  stages {
-    stage('Git Checout') {
-      steps {
-        git(url: 'https://github.com/OsamaKM/sample-react-app', branch: 'main')
-      }
-    }
+    agent any
 
-    stage('Install Dependencies') {
-      steps {
-        nodejs 'npm install'
-      }
-    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
 
-  }
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    def nodejsInstallation = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+                    withEnv(["PATH+NODEJS=${nodejsInstallation}/bin"]) {
+                        sh 'npm install'
+                    }
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        // Add more stages for testing, deployment, etc.
+    }
 }
