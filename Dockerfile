@@ -1,9 +1,9 @@
 FROM node:16-alpine AS builder
 WORKDIR /app
-COPY package.json .
-RUN yarn
+COPY package*.json .
+RUN npm install
 COPY . .
-RUN yarn run build
+RUN npm run build
 FROM node:16-alpine
 WORKDIR /frontend
 RUN yarn global add serve
