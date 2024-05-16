@@ -1,15 +1,13 @@
-FROM node:16-alpine
-
+FROM node:16-alpine AS builder
 WORKDIR /app
-
 COPY package.json .
-
-RUN npm install
-
+COPY yarn.lock .
+RUN yarn
 COPY . .
-
-RUN npm run build
-
+RUN yarn run build
+FROM node:16-alpine
+WORKDIR /frontend
+RUN yarn global add serve
+COPY --from=builder /app/build ./build
 EXPOSE 3000
-
-CMD [ "npm", "start" ]
+CMD [ "serve","-l","3000","-n","-s","build" ]
