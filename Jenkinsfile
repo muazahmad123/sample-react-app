@@ -19,6 +19,7 @@ pipeline {
             steps {
                 echo 'testing the app'
                 echo 'Hello World!'
+                sh 'docker ps'
 
             }
         }
