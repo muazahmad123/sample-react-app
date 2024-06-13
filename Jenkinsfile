@@ -5,37 +5,34 @@ pipeline {
     }
 
     stages {
-        stage("build") {
-
+        stage("Building the Image") {
             steps {
                 script {
-                    echo 'building the app'
-                    echo "building version ${NEW_VERSION}"
                     echo 'Building the Image'
                     sh 'docker build -t sample-react-app:latest .'
-                    def containerName= 'Sample-React-App'
+                }
+            }
+
+        stage("Stopping the Existing Container") {
+            steps {
+                script {
+                    def containerName = 'Sample-React-App'
                     def containerExists = sh(script: "docker ps -a -q -f name=${containerName}", returnStdout: true).trim()
                     if (containerExists) {
-                        echo "Stopping the docker container"
+                        echo 'Stopping the container'
                         sh 'docker stop ${containerName}'
                         sh 'docker rm ${containerName}'
+                    else {
+                        echo 'Container does not exist'
+                    }    
                     }
-                    echo 'Running the container'
-                    sh 'docker run -dp 3000:3000  --rm --name Sample-React-App sample-react-app:latest'
-                    echo 'Hello World!'
-                    sh 'docker ps'
-
                 }
-                
             }
         }
 
-        stage("test") {
-
+        stage("Running the Container") {
             steps {
-                echo 'Running the tests'
-
-
+                sh 'docker run -dp 3000:3000 --rm Sample-React-App sample-react-app:latest'
             }
         }
         stage("deploy") {
