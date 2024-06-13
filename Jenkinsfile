@@ -22,9 +22,10 @@ pipeline {
                         echo 'Stopping the container'
                         sh 'docker stop ${containerName}'
                         sh 'docker rm ${containerName}'
+    
+                    }
                     else {
                         echo 'Container does not exist'
-                    }    
                     }
                 }
             }
