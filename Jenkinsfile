@@ -17,12 +17,13 @@ pipeline {
         stage("Stopping the Existing Container") {
             steps {
                 script {
-                    def containerName = 'Sample-React-App'
+                    def containerName = "Sample-React-App"
+                    echo ${containerName}
                     def containerExists = sh(script: "docker ps -a -q -f name=${containerName}", returnStdout: true).trim()
                     if (containerExists) {
                         echo 'Stopping the container'
-                        sh "docker stop ${containerName}"
-                        sh "docker rm ${containerName}"
+                        sh 'docker stop sample-react-app'
+                        sh 'docker rm sample-react-app'
     
                     }
                     else {
