@@ -22,7 +22,7 @@ pipeline {
                     if (containerExists) {
                         echo 'Stopping the container'
                         sh 'docker stop Sample-React-App'
-                        sh 'docker rm Sample-React-App'
+                        //sh 'docker rm Sample-React-App'
     
                     }
                     else {
