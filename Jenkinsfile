@@ -12,8 +12,13 @@ pipeline {
                 echo "building version ${NEW_VERSION}"
                 echo 'Building the Image'
                 sh 'docker build -t sample-react-app:latest .'
-                echo 'Removing the old container'
-                sh 'docker stop Sample-React-App'
+                def containerName= 'Sample-React-App'
+                def containerExists = sh(script: "docker ps -a -q -f name=${containerName}", returnStdout: true).trim()
+                if (containerExists) {
+                    echo "Stopping the docker container"
+                    sh 'docker stop ${containerName}'
+                    sh 'docker rm ${containerName}'
+                }
                 echo 'Running the container'
                 sh 'docker run -dp 3000:3000  --rm --name Sample-React-App sample-react-app:latest'
                 echo 'Hello World!'
