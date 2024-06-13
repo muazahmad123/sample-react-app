@@ -1,48 +1,91 @@
+// pipeline {
+//     agent any
+//     environment {
+//         NEW_VERSION = '1.3.0'
+//     }
+
+//     stages {
+//         stage("Building the Image") {
+//             steps {
+//                 script {
+//                     echo 'Building the Image'
+//                     sh 'docker build -t sample-react-app:latest .'
+//                 }
+//             }
+//         }    
+
+//         stage("Stopping the Existing Container") {
+//             steps {
+//                 script {
+//                     def containerName = 'Sample-React-App'
+//                     def containerExists = sh(script: "docker ps -a -q -f name=${containerName}", returnStdout: true).trim()
+//                     if (containerExists) {
+//                         echo 'Stopping the container'
+//                         sh 'docker stop ${containerName}'
+//                         //sh 'docker rm Sample-React-App'
+    
+//                     }
+//                     else {
+//                         echo 'Container does not exist'
+//                     }
+//                 }
+//             }
+//         }
+
+//         stage("Running the Container") {
+//             steps {
+//                 sh 'docker run -dp 3000:3000 --rm --name Sample-React-App sample-react-app:latest'
+//             }
+//         }
+//         stage("deploy") {
+
+//             steps {
+//                 echo 'deploying the app'
+
+//             }
+//         }
+//     }
+// }
+
+
 pipeline {
-    agent any
-    environment {
-        NEW_VERSION = '1.3.0'
-    }
+    agents any
 
     stages {
-        stage("Building the Image") {
+        stage("build") {
             steps {
-                script {
-                    echo 'Building the Image'
-                    sh 'docker build -t sample-react-app:latest .'
-                }
-            }
-        }    
-
-        stage("Stopping the Existing Container") {
-            steps {
-                script {
-                    def containerName = 'Sample-React-App'
-                    def containerExists = sh(script: "docker ps -a -q -f name=${containerName}", returnStdout: true).trim()
-                    if (containerExists) {
-                        echo 'Stopping the container'
-                        sh 'docker stop Sample-React-App'
-                        //sh 'docker rm Sample-React-App'
-    
-                    }
-                    else {
-                        echo 'Container does not exist'
-                    }
-                }
+                echo 'building the application'
             }
         }
-
-        stage("Running the Container") {
+        stage("test") {
             steps {
-                sh 'docker run -dp 3000:3000 --rm --name Sample-React-App sample-react-app:latest'
+                echo 'testing the application'
             }
         }
         stage("deploy") {
-
             steps {
-                echo 'deploying the app'
-
+                echo "deploying the application"
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
