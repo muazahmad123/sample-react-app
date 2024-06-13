@@ -12,6 +12,7 @@ pipeline {
                     sh 'docker build -t sample-react-app:latest .'
                 }
             }
+        }    
 
         stage("Stopping the Existing Container") {
             steps {
@@ -44,5 +45,4 @@ pipeline {
             }
         }
     }
-}
 }
