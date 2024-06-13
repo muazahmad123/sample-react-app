@@ -21,8 +21,8 @@ pipeline {
                     def containerExists = sh(script: "docker ps -a -q -f name=${containerName}", returnStdout: true).trim()
                     if (containerExists) {
                         echo 'Stopping the container'
-                        sh 'docker stop sample-react-app'
-                        sh 'docker rm sample-react-app'
+                        sh 'docker stop Sample-React-App'
+                        sh 'docker rm Sample-React-App'
     
                     }
                     else {
