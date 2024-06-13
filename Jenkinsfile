@@ -34,7 +34,7 @@ pipeline {
 
         stage("Running the Container") {
             steps {
-                sh 'docker run -dp 3000:3000 --rm Sample-React-App sample-react-app:latest'
+                sh 'docker run -dp 3000:3000 --rm --name Sample-React-App sample-react-app:latest'
             }
         }
         stage("deploy") {
