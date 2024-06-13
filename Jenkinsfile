@@ -17,7 +17,10 @@ pipeline {
         stage("test") {
 
             steps {
-                echo 'testing the app'
+                echo 'Building the Image'
+                sh 'docker build -t sample-react-app:latest .'
+                echo 'Running the container'
+                sh 'docker run -dp 3000:3000 --name Sample-React-App sample-react-app:latest'
                 echo 'Hello World!'
                 sh 'docker ps'
 
