@@ -18,7 +18,6 @@ pipeline {
             steps {
                 script {
                     def containerName = 'Sample-React-App'
-                    echo $containerName
                     def containerExists = sh(script: "docker ps -a -q -f name=${containerName}", returnStdout: true).trim()
                     if (containerExists) {
                         echo 'Stopping the container'
