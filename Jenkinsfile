@@ -12,8 +12,10 @@ pipeline {
                 echo "building version ${NEW_VERSION}"
                 echo 'Building the Image'
                 sh 'docker build -t sample-react-app:latest .'
+                echo 'Removing the old container'
+                sh 'docker stop Sample-React-App'
                 echo 'Running the container'
-                sh 'docker run -dp 3000:3000 --name Sample-React-App sample-react-app:latest'
+                sh 'docker run -dp 3000:3000  --rm --name Sample-React-App sample-react-app:latest'
                 echo 'Hello World!'
                 sh 'docker ps'
 
