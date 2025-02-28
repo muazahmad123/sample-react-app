@@ -34,6 +34,5 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          sudo rm -rf /var/www/reactapp/*
           sudo cp -r build/* /var/www/reactapp/
           sudo systemctl restart nginx  # Restart Nginx if needed
