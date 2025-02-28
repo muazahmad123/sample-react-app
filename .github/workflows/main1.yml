@@ -1,0 +1,43 @@
+name: Build, Push & Deploy Docker Image
+
+on:
+  push:
+    branches:
+      - main  # Runs when code is pushed to the main branch
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest  # Uses GitHub-hosted runner
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest .
+          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:${{ github.sha }}
+
+      - name: Push Docker Image
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:${{ github.sha }}
+
+  deploy:
+    needs: build-and-push  # Runs only after build-and-push job is successful
+    runs-on: self-hosted  # Runs on your Ubuntu self-hosted runner
+
+    steps:
+      - name: Pull the latest Docker image
+        run: |
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest
+
+      - name: Run Docker Container
+        run: |
+          docker run -d --name my-app-container -p 8081:3000 ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest
